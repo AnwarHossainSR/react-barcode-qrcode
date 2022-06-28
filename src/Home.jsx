@@ -1,21 +1,24 @@
-import { Link } from "react-router-dom";
+import { useCallback, useState } from "react";
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
-const Home = () => {
+function Home() {
+  const [data, setData] = useState(null);
+
+  const handleOnChange = useCallback((err, result) => {
+    if (result) setData(result.text);
+    //else setData("Not Found");
+  }, []);
+  const noDataFound = <span>Use barcode for the scan.</span>;
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/barcode">Barcode</Link>
-        </li>
-        <li>
-          <Link to="/barcode-scanner">Barcode Scanner</Link>
-        </li>
-      </ul>
-    </nav>
+    <>
+      <BarcodeScannerComponent
+        width={"50%"}
+        height={"calc(50%)"}
+        onUpdate={handleOnChange}
+      />
+      <p>{data ? data : noDataFound}</p>
+    </>
   );
-};
+}
 
 export default Home;
