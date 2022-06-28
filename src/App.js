@@ -1,4 +1,4 @@
-import {Route, Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import BarCodeScanner from "./components/BarCodeScanner";
 import Barcode from "./components/Brcode";
