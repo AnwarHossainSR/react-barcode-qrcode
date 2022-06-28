@@ -1,23 +1,24 @@
-import React, { useEffect } from "react";
-import config from "./config.json";
 import Quagga from "quagga";
+import React, { useEffect } from "react";
 
-const Scanner = props => {
+import config from "./config.json";
+
+const Scanner = (props) => {
   const { onDetected } = props;
 
   useEffect(() => {
-    Quagga.init(config, err => {
+    Quagga.init(config, (err) => {
       if (err) {
         console.log(err, "error msg");
       }
       Quagga.start();
       return () => {
-        Quagga.stop()
-      }
+        Quagga.stop();
+      };
     });
 
-    //detecting boxes on stream
-    Quagga.onProcessed(result => {
+    // detecting boxes on stream
+    Quagga.onProcessed((result) => {
       var drawingCtx = Quagga.canvas.ctx.overlay,
         drawingCanvas = Quagga.canvas.dom.overlay;
 
@@ -30,13 +31,13 @@ const Scanner = props => {
             Number(drawingCanvas.getAttribute("height"))
           );
           result.boxes
-            .filter(function(box) {
+            .filter(function (box) {
               return box !== result.box;
             })
-            .forEach(function(box) {
+            .forEach(function (box) {
               Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
                 color: "green",
-                lineWidth: 2
+                lineWidth: 2,
               });
             });
         }
@@ -44,7 +45,7 @@ const Scanner = props => {
         if (result.box) {
           Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
             color: "#00F",
-            lineWidth: 2
+            lineWidth: 2,
           });
         }
 
@@ -62,7 +63,7 @@ const Scanner = props => {
     Quagga.onDetected(detected);
   }, []);
 
-  const detected = result => {
+  const detected = (result) => {
     onDetected(result.codeResult.code);
   };
 
